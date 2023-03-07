@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'projectcapstone.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': BASE_DIR / 'capstoneblog',
+        'NAME': 'capstoneblog',
     }
 }
 
