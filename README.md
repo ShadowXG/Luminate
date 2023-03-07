@@ -11,7 +11,7 @@
 - As a signed in user, I would to delete my blog posts and comments.
 
 ## Routes
----
+
 ### Users
 | URL                 | HTTP Verb   | Actions     |
 |---------------------|-------------|-------------|
