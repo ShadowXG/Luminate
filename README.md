@@ -43,6 +43,10 @@
 | `/replies/:postId/:replyId`   | `PATCH `    | `update`          |
 | `/replies/:postId/:replyId`   | `DELETE`    | `delete`          |
 
+## Wireframe
+
+![Screenshot 2023-03-07 at 1 44 53 PM](https://user-images.githubusercontent.com/112126759/223521230-e5f623f5-3040-4261-b105-b28be84c02fb.png)
+
 ## ERD
 ![Alt text](planning/Capstone-ERD.jpg)
 
