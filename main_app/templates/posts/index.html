@@ -5,6 +5,7 @@
     {% for post in posts %}
         <div class="card">
             <div class="card-content">
+                <p class="float-right" style="float: right">posted: {{post.created_date}}</p>
                 <span class="card-title">{{ post.title }}</span>
                 <p>Body: {{ post.body }}</p>
             </div>
