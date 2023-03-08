@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,16 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luminate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
-<body>
+<body class="blue lighten-4">
     <header class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper white">
                 <ul>
-                    <li><a href="/" class="left brand-logo">&nbsp;&nbsp;Luminate</a></li>
+                    <li><a href="/" class="left brand-logo black-text">&nbsp;&nbsp;Luminate</a></li>
                 </ul>
                 <ul class="right">
-                    <li><a href="/posts">View all Posts</a></li>
+                    <li><a href="/posts" class="black-text">View all Posts</a></li>
                 </ul>
             </div>
         </nav>
@@ -24,8 +26,8 @@
         {% block content %}
         {% endblock %}
     </main>
-    <footer class="page-footer">
-        <div class="right">All Rights Reserved, &copy; 2023 Luminate &nbsp;</div>
+    <footer class="page-footer white">
+        <div class="right black-text">All Rights Reserved, &copy; 2023 Luminate &nbsp;</div>
     </footer>
 </body>
 </html>
