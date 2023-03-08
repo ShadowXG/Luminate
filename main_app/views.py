@@ -24,6 +24,7 @@ class PostCreate(CreateView):
 class PostUpdate(UpdateView):
     model = Post
     fields = ['title', 'body']
+    success_url = '/posts/'
 
 class PostDelete(DeleteView):
     model = Post
