@@ -15,4 +15,5 @@ urlpatterns = [
     path('likes/', views.LikeList.as_view(), name='likes_index'),
     path('likes/create/', views.LikeCreate.as_view(), name='likes_create'),
     path('likes/<int:pk>/delete/', views.LikeDelete.as_view(), name='likes_delete'),
+    path('accounts/signup/', views.signup, name='signup'),
 ]
