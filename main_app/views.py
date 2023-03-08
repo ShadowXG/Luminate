@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Post
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from .models import Post, Like
 
 # Create your views here.
 def home(request):
@@ -26,3 +28,15 @@ class PostUpdate(UpdateView):
 class PostDelete(DeleteView):
     model = Post
     success_url = '/posts/'
+
+class LikeList(ListView):
+    model = Like
+    template_name = 'likes/index.html'
+
+class LikeCreate(CreateView):
+    model = Like
+    success_url = '/likes/'
+
+class LikeDelete(DeleteView):
+    model = Like
+    success_url = '/likes/'
