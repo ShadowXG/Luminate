@@ -14,6 +14,7 @@ def posts_index(request):
 class PostCreate(CreateView):
     model = Post
     fields = ['title', 'body']
+    success_url = '/posts'
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
