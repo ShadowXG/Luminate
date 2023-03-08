@@ -1,17 +1,27 @@
 {% extends 'base.html' %}
-{% block content %}
-    <h1>Liked Posts</h1>
 
-    {% for like in object_list %}
+{% block content %}
+    <h1>Posts you've liked</h1>
+    {% if liked_posts %}
+        <ul>
+        {% for post in liked_posts %}
         <div class="card">
             <div class="card-content">
-                <span class="card-title">{{ like.post.title }}</span>
-                <p>Body: {{ like.post.body }}</p>
+                <span class="card-title">{{ post.title }}</span>
+                <p>Body: {{ post.body }}</p>
             </div>
             <div class="card-action">
-                <a href="{% url 'likes_delete' like.id %}" class="blue-text text-lighten-2">Delete</a>
+                <form method="POST" action="{% url 'toggle_like' post_id=post.id %}" class="float-right">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
+                        {% if request.user in post.likes.all %}Unlike{% else %}Like{% endif %}
+                    </button>
+                </form>
             </div>
         </div>
-    {% endfor %}
-    
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't liked any posts yet.</p>
+    {% endif %}
 {% endblock %}

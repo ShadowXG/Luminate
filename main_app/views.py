@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -32,17 +32,18 @@ class PostDelete(DeleteView):
     model = Post
     success_url = '/posts/'
 
-class LikeList(ListView):
-    model = Like
-    template_name = 'likes/index.html'
+def toggle_like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+    like, created = Like.objects.get_or_create(user=user, post=post)
+    if not created:
+        like.delete()
+    return redirect('index')
 
-class LikeCreate(CreateView):
-    model = Like
-    success_url = '/likes/'
-
-class LikeDelete(DeleteView):
-    model = Like
-    success_url = '/likes/'
+def liked_posts(request):
+    liked_posts = request.user.post_likes.all()
+    print(liked_posts)
+    return render(request, 'likes/index.html', {'liked_posts': liked_posts})
 
 def signup(request):
     error_message = ''
