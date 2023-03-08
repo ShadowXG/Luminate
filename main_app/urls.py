@@ -12,7 +12,7 @@ urlpatterns = [
     # like unassociation
     # path('posts/<int:post_id>/unassoc_like/<int:like_id/', views.unassoc_like, name='unassoc_like'),
     # paths for likes
-    path('likes/', views.LikeList.as_view(), name='like_index'),
+    path('likes/', views.LikeList.as_view(), name='likes_index'),
     path('likes/create/', views.LikeCreate.as_view(), name='likes_create'),
     path('likes/<int:pk>/delete/', views.LikeDelete.as_view(), name='likes_delete'),
 ]

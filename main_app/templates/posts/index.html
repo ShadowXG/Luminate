@@ -11,6 +11,7 @@
             <div class="card-action">
                 <a href="{% url 'posts_update' post.id %}" class="blue-text text-lighten-2">Edit</a>
                 <a href="{% url 'posts_delete' post.id %}" class="blue-text text-lighten-2">Delete</a>
+                <a href="{% url 'likes_create' %}" class="blue-text text-lighten-2 right">♥</a>
             </div>
         </div>
     {% endfor %}

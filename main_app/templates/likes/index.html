@@ -5,8 +5,11 @@
     {% for like in object_list %}
         <div class="card">
             <div class="card-content">
-                <span class="card-title">{{ post.title }}</span>
-                <p>Body: {{ post.body }}</p>
+                <span class="card-title">{{ like.post.title }}</span>
+                <p>Body: {{ like.post.body }}</p>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'likes_delete' like.id %}" class="blue-text text-lighten-2">Delete</a>
             </div>
         </div>
     {% endfor %}
