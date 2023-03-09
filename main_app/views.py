@@ -38,11 +38,11 @@ def toggle_like(request, post_id):
     like, created = Like.objects.get_or_create(user=user, post=post)
     if not created:
         like.delete()
+        return redirect('liked_posts')
     return redirect('index')
 
 def liked_posts(request):
     liked_posts = request.user.post_likes.all()
-    print(liked_posts)
     return render(request, 'likes/index.html', {'liked_posts': liked_posts})
 
 def signup(request):

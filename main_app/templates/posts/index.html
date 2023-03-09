@@ -20,9 +20,9 @@
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
                                 {% if request.user in post.likes.all %}
-                                    <i class="fas fa-heart red-text">Unlike</i>
+                                    <i class="fas fa-heart red-text"></i>
                                 {% else %}
-                                    <i class="far fa-heart">Like</i>
+                                    <i class="far fa-heart black-text"></i>
                                 {% endif %}
                             </button>
                         </form>
