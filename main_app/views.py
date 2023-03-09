@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from .models import Post, Like
+from .models import Post, Like, Reply
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse
 
 # Create your views here.
 def home(request):
@@ -12,7 +13,7 @@ def home(request):
 
 # index route for posts
 def posts_index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.prefetch_related('replies').all
     return render(request, 'posts/index.html', { 'posts': posts })
 
 class PostCreate(CreateView):
@@ -59,3 +60,21 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
+def add_reply(request):
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        post_id = request.POST.get('post_id')
+        post = Post.objects.get(id=post_id)
+        reply = Reply(content=content, user=request.user, post=post )
+        reply.save()
+        return redirect('index')
+# def add_reply(request, post_id):
+#     post = get_object_or_404(Post, id=post_id)
+#     if request.method == 'POST':
+#         reply_text = request.POST.get('reply_text')
+#         if reply_text:
+#             new_reply = Reply(user=request.user, post=post, content=reply_text)
+#             new_reply.save()
+#             return redirect(reverse('post_detail', args=[post_id]))
+#     return redirect('index')

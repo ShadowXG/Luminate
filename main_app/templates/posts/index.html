@@ -29,6 +29,31 @@
                     </div>
                 </div>
             </div>
+            <div class="card-action">
+                <button class="reply-button" data-post-id="{{ post.id }}">Reply</button>
+                <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}">
+                    {% csrf_token %}
+                    <textarea name="content"></textarea>
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <button type="submit">Submit</button>
+                </form>
+                <ul>
+                    {% for reply in post.replies.all %}
+                        <li class="card reply-card" style="padding: 10px">{{ reply.user.username }}: {{ reply.content }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     {% endfor %}
+    <script>
+        jQuery(document).ready(function() {
+            jQuery('.reply-form').hide()
+            jQuery('.reply-card').hide()
+            jQuery('.reply-button').click(function() {
+                let postId = jQuery(this).data('post-id')
+                jQuery('#reply-form-' + postId).toggle()
+                jQuery('.reply-card').toggle()
+            })
+        })
+    </script>
 {% endblock %}
