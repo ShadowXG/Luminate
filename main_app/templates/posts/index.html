@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="card-action">
-                <button class="reply-button" data-post-id="{{ post.id }}">Reply</button>
+                <button class="reply-button btn blue lighten-1" data-post-id="{{ post.id }}">Replies</button>
                 <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}">
                     {% csrf_token %}
                     <textarea name="content"></textarea>
