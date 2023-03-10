@@ -10,5 +10,7 @@ urlpatterns = [
     path('posts/<int:post_id>/like/', views.toggle_like, name='toggle_like'),
     path('likes/', views.liked_posts, name='liked_posts'),
     path('replies/', views.add_reply, name='add_reply'),
+    path('replies/<int:pk>/update/', views.ReplyUpdate.as_view(), name='reply_update'),
+    path('replies/<int:pk>/delete/', views.ReplyDelete.as_view(), name='reply_delete'),
     path('accounts/signup/', views.signup, name='signup'),
 ]

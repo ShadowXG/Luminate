@@ -69,12 +69,17 @@ def add_reply(request):
         reply = Reply(content=content, user=request.user, post=post )
         reply.save()
         return redirect('index')
-# def add_reply(request, post_id):
-#     post = get_object_or_404(Post, id=post_id)
-#     if request.method == 'POST':
-#         reply_text = request.POST.get('reply_text')
-#         if reply_text:
-#             new_reply = Reply(user=request.user, post=post, content=reply_text)
-#             new_reply.save()
-#             return redirect(reverse('post_detail', args=[post_id]))
-#     return redirect('index')
+
+class ReplyUpdate(UpdateView):
+    model = Reply
+    fields = ['content']
+    template_name_suffix = '_form'
+    success_url = '/posts/'
+
+    # def get_success_url(self):
+    #     return reverse('index', args=[self.object.post.id])
+
+class ReplyDelete(DeleteView):
+    model = Reply
+    success_url = '/posts/'
+    
