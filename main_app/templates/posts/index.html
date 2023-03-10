@@ -30,19 +30,19 @@
                 </div>
             </div>
             <div class="card-action">
-                <button class="reply-button btn blue lighten-1" data-post-id="{{ post.id }}"><i class="material-icons">question_answer</i></button>
+                <button class="reply-button btn blue lighten-1" style="margin-bottom: 5px;"data-post-id="{{ post.id }}"><i class="material-icons">question_answer</i></button>
                 <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}" data-post-id="{{ post.id }}">
                     {% csrf_token %}
-                    <textarea name="content"></textarea>
+                    <textarea name="content" placeholder="Your reply here..."></textarea>
                     <input type="hidden" name="post_id" value="{{ post.id }}">
-                    <button type="submit">Reply</button>
+                    <button type="submit" class="blue-text text-lighten-2" style="border: 2px solid #5da6fa; background-color: white; padding: 6px;">Reply</button>
                 </form>
                 <ul>
                     {% for reply in post.replies.all %}
-                        <li class="card reply-card" style="padding: 10px" data-post-id="{{ post.id }}">{{ reply.user.username }}: {{ reply.content }}
+                        <li class="card reply-card" style="padding: 12px" data-post-id="{{ post.id }}">{{ reply.user.username }}: {{ reply.content }}
                             {% if request.user == reply.user %}
-                                <a href="{% url 'reply_update' reply.id %}" class="blue-text text-lighten-2">Edit</a>
-                                <a href="{% url 'reply_delete' reply.id %}" class="blue-text text-lighten-2">Delete</a>
+                                <a href="{% url 'reply_delete' reply.id %}" class="blue-text text-lighten-2" style="float: right; margin-left: 10px;"><i class="material-icons">clear</i></a>
+                                <a href="{% url 'reply_update' reply.id %}" class="blue-text text-lighten-2" style="float: right;"><i class="material-icons">edit</i></a>
                             {% endif %}
                         </li>
                     {% endfor %}
