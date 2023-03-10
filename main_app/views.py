@@ -3,6 +3,10 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Post, Like, Reply, Photo
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+# Import the mixin for class-based views
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # from django.urls import reverse
 import uuid # pthon pakage for creating unique identifiers
 import boto3 # what we'll use to connect to s3
@@ -22,7 +26,7 @@ def posts_index(request):
     posts = Post.objects.prefetch_related('replies').all
     return render(request, 'posts/index.html', { 'posts': posts })
 
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'body']
     success_url = '/posts'
@@ -30,15 +34,16 @@ class PostCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
     
-class PostUpdate(UpdateView):
+class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title', 'body']
     success_url = '/posts/'
 
-class PostDelete(DeleteView):
+class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = '/posts/'
 
+@login_required
 def toggle_like(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     user = request.user
@@ -48,6 +53,7 @@ def toggle_like(request, post_id):
         return redirect('liked_posts')
     return redirect('index')
 
+@login_required
 def liked_posts(request):
     liked_posts = request.user.post_likes.all()
     return render(request, 'likes/index.html', {'liked_posts': liked_posts})
@@ -67,6 +73,7 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
+@login_required
 def add_reply(request):
     if request.method == 'POST':
         content = request.POST.get('content')
@@ -76,7 +83,7 @@ def add_reply(request):
         reply.save()
         return redirect('index')
 
-class ReplyUpdate(UpdateView):
+class ReplyUpdate(LoginRequiredMixin, UpdateView):
     model = Reply
     fields = ['content']
     template_name_suffix = '_form'
@@ -85,10 +92,11 @@ class ReplyUpdate(UpdateView):
     # def get_success_url(self):
     #     return reverse('index', args=[self.object.post.id])
 
-class ReplyDelete(DeleteView):
+class ReplyDelete(LoginRequiredMixin, DeleteView):
     model = Reply
     success_url = '/posts/'
 
+@login_required
 def add_photo(request, post_id):
     # photo-file will be the name attribute of our form input
     photo_file = request.FILES.get('photo-file', None)
