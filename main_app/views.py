@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import ListView
-from django.views.generic.detail import DetailView
-from .models import Post, Like, Reply
+from .models import Post, Like, Reply, Photo
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse
+# from django.urls import reverse
+import uuid # pthon pakage for creating unique identifiers
+import boto3 # what we'll use to connect to s3
+from django.conf import settings
+
+AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY = settings.AWS_SECRET_ACCESS_KEY
+S3_BUCKET = settings.S3_BUCKET
+S3_BASE_URL = settings.S3_BASE_URL
 
 # Create your views here.
 def home(request):
@@ -82,4 +88,30 @@ class ReplyUpdate(UpdateView):
 class ReplyDelete(DeleteView):
     model = Reply
     success_url = '/posts/'
-    
+
+def add_photo(request, post_id):
+    # photo-file will be the name attribute of our form input
+    photo_file = request.FILES.get('photo-file', None)
+    # use conditional logic to make sure a file is present
+    if photo_file:
+        # S3_BASE_URL
+        # if present, we'll use this to create a reference to the boto3 client
+        s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        # create a uniqu key for our photos
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        try:
+            # if success
+            s3.upload_fileobj(photo_file, S3_BUCKET, key)
+            # build the full url string to upload the s3
+            url = f"{S3_BASE_URL}{S3_BUCKET}/{key}"
+            # if our upload was successful
+            # we want to ust that photo location to creat a Photo model
+            photo = Photo(url=url, post_id=post_id)
+            # save the photo to the db
+            photo.save()
+        except Exception as error:
+            # print an error message
+            print('Error uploading photo', error)
+            return redirect('index')
+        
+    return redirect('index')

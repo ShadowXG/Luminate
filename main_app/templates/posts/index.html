@@ -7,6 +7,9 @@
             <div class="card-content">
                 <p class="float-right" style="float: right">posted: {{post.created_date}}</p>
                 <span class="card-title">{{ post.title }}</span>
+                {% if post.photo %}
+                    <img src="{{ post.photo.url }}" alt="blog photo">
+                {% endif %}
                 <p>Body: {{ post.body }}</p>
             </div>
             <div class="card-action">
