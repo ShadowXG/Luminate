@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="card-action">
-                <button class="reply-button btn blue lighten-1" style="margin-bottom: 5px;"data-post-id="{{ post.id }}"><i class="material-icons">question_answer</i></button>
+                <button class="reply-button btn blue lighten-1" style="margin-bottom: 5px;"data-post-id="{{ post.id }}"><i class="material-icons" title="Replies">sms</i></button>
                 <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}" data-post-id="{{ post.id }}">
                     {% csrf_token %}
                     <textarea name="content" placeholder="Your reply here..."></textarea>
@@ -41,8 +41,8 @@
                     {% for reply in post.replies.all %}
                         <li class="card reply-card" style="padding: 12px" data-post-id="{{ post.id }}">{{ reply.user.username }}: {{ reply.content }}
                             {% if request.user == reply.user %}
-                                <a href="{% url 'reply_delete' reply.id %}" class="blue-text text-lighten-2" style="float: right; margin-left: 10px;"><i class="material-icons">clear</i></a>
-                                <a href="{% url 'reply_update' reply.id %}" class="blue-text text-lighten-2" style="float: right;"><i class="material-icons">edit</i></a>
+                                <a href="{% url 'reply_delete' reply.id %}" class="blue-text text-lighten-2" style="float: right; margin-left: 10px;" title="Delete"><i class="material-icons">clear</i></a>
+                                <a href="{% url 'reply_update' reply.id %}" class="blue-text text-lighten-2" style="float: right;" title="Edit"><i class="material-icons">edit</i></a>
                             {% endif %}
                         </li>
                     {% endfor %}
