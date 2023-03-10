@@ -3,6 +3,8 @@
     <h1>Post List</h1>
 
     {% for post in posts %}
+        {% with post.replies.all as replies %}
+        {% with reply_count=replies.count %}
         <div class="card">
             <div class="card-content">
                 <p class="float-right" style="float: right">posted: {{post.created_date}}</p>
@@ -20,7 +22,7 @@
                             <a href="{% url 'posts_delete' post.id %}" class="blue-text text-lighten-2">Delete</a>
                         </div>
                         <div class="col s6 right-align">
-                            <form method="POST" action="{% url 'toggle_like' post_id=post.id %}" class="float-right">
+                            <form method="POST" action="{% url 'toggle_like' post_id=post.id %}" class="float-right" title="Like">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
                                     {% if request.user in post.likes.all %}
@@ -35,7 +37,7 @@
                         <div class="col s12 right-align">
                             <form method="POST" action="{% url 'toggle_like' post_id=post.id %}" class="float-right">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
+                                <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}" title="Like">
                                     {% if request.user in post.likes.all %}
                                         <i class="fas fa-heart red-text"></i>
                                     {% else %}
@@ -48,12 +50,12 @@
                 </div>
             </div>
             <div class="card-action" style="border-radius: 10px;">
-                <button class="reply-button btn blue lighten-1" style="margin-bottom: 5px;"data-post-id="{{ post.id }}"><i class="material-icons" title="Replies">sms</i></button>
+                <button class="reply-button btn blue lighten-1" style="margin-bottom: 5px;"data-post-id="{{ post.id }}"><i class="material-icons right" title="Replies">sms</i>{{ reply_count }}</button>
                 <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}" data-post-id="{{ post.id }}">
                     {% csrf_token %}
                     <textarea name="content" placeholder="Your reply here..."></textarea>
                     <input type="hidden" name="post_id" value="{{ post.id }}">
-                    <button type="submit" class="blue-text text-lighten-2" style="border: 2px solid #5da6fa; background-color: white; padding: 6px;">Reply</button>
+                    <button type="submit" class="blue-text text-lighten-2" style="border: 2px solid #5da6fa;background-color: white; padding: 6px;">Reply</button>
                 </form>
                 <ul>
                     {% for reply in post.replies.all %}
@@ -67,6 +69,8 @@
                 </ul>
             </div>
         </div>
+        {% endwith %}
+        {% endwith %}
     {% endfor %}
     <style>
         .card {
