@@ -31,7 +31,7 @@
             </div>
             <div class="card-action">
                 <button class="reply-button btn blue lighten-1" data-post-id="{{ post.id }}">Replies</button>
-                <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}">
+                <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}" data-post-id="{{ post.id }}">
                     {% csrf_token %}
                     <textarea name="content"></textarea>
                     <input type="hidden" name="post_id" value="{{ post.id }}">
@@ -39,7 +39,7 @@
                 </form>
                 <ul>
                     {% for reply in post.replies.all %}
-                        <li class="card reply-card" style="padding: 10px">{{ reply.user.username }}: {{ reply.content }}</li>
+                        <li class="card reply-card" style="padding: 10px" data-post-id="{{ post.id }}">{{ reply.user.username }}: {{ reply.content }}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -52,7 +52,7 @@
             jQuery('.reply-button').click(function() {
                 let postId = jQuery(this).data('post-id')
                 jQuery('#reply-form-' + postId).toggle()
-                jQuery('.reply-card').toggle()
+                jQuery('.reply-card[data-post-id="' + postId + '"]').toggle()
             })
         })
     </script>
