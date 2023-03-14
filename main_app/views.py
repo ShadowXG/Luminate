@@ -44,7 +44,8 @@ class PostDelete(LoginRequiredMixin, DeleteView):
     success_url = '/posts/'
 
 @login_required
-def toggle_like(request, post_id):
+def like_toggle(request, post_id):
+    print('testing\n')
     post = get_object_or_404(Post, id=post_id)
     user = request.user
     like, created = Like.objects.get_or_create(user=user, post=post)
@@ -52,6 +53,17 @@ def toggle_like(request, post_id):
         like.delete()
         return redirect('liked_posts')
     return redirect('index')
+
+@login_required
+def toggle_index_like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+    like, created = Like.objects.get_or_create(user=user, post=post)
+    if not created:
+        like.delete()
+        return redirect('index')
+    return redirect('index')
+
 
 @login_required
 def liked_posts(request):

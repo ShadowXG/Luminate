@@ -8,7 +8,8 @@ urlpatterns = [
     path('posts/create/', views.PostCreate.as_view(), name='posts_create'),
     path('posts/<int:pk>/update/', views.PostUpdate.as_view(), name='posts_update'),
     path('posts/<int:pk>/delete/', views.PostDelete.as_view(), name='posts_delete'),
-    path('posts/<int:post_id>/like/', views.toggle_like, name='toggle_like'),
+    path('posts/<int:post_id>/like/', views.like_toggle, name='like_toggle'),
+    path('posts/<int:post_id>/index_like/', views.toggle_index_like, name='toggle_index_like'),
     # add photo path
     path('posts/<int:post_id>/add_photo/', views.add_photo, name='add_photo'),
     # likes path

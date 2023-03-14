@@ -11,7 +11,7 @@
                 <p>Body: {{ post.body }}</p>
             </div>
             <div class="card-action">
-                <form method="POST" action="{% url 'toggle_like' post_id=post.id %}" class="float-right">
+                <form method="POST" action="{% url 'like_toggle' post_id=post.id %}" class="float-right">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
                         {% if request.user in post.likes.all %}

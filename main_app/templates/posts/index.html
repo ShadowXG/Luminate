@@ -20,7 +20,7 @@
                             <a href="{% url 'posts_delete' post.id %}" class="blue-text text-lighten-2">Delete</a>
                         </div>
                         <div class="col s6 right-align">
-                            <form method="POST" action="{% url 'toggle_like' post_id=post.id %}" class="float-right">
+                            <form method="POST" action="{% url 'toggle_index_like' post_id=post.id %}" class="float-right">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
                                     {% if request.user in post.likes.all %}
@@ -33,7 +33,7 @@
                         </div>
                     {% else %}
                         <div class="col s12 right-align">
-                            <form method="POST" action="{% url 'toggle_like' post_id=post.id %}" class="float-right">
+                            <form method="POST" action="{% url 'toggle_index_like' post_id=post.id %}" class="float-right">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
                                     {% if request.user in post.likes.all %}
