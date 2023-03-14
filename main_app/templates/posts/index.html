@@ -22,11 +22,7 @@
                             <a href="{% url 'posts_delete' post.id %}" class="blue-text text-lighten-2">Delete</a>
                         </div>
                         <div class="col s6 right-align">
-<<<<<<< HEAD
                             <form method="POST" action="{% url 'toggle_index_like' post_id=post.id %}" class="float-right">
-=======
-                            <form method="POST" action="{% url 'toggle_like' post_id=post.id %}" class="float-right" title="Like">
->>>>>>> 042e71b6de9574788e4fa9acc79f04cec1c6f151
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
                                     {% if request.user in post.likes.all %}
