@@ -18,3 +18,7 @@ footer.page-footer {
     border: none !important;
     box-shadow: none !important;
   }
+
+.black-text {
+    color: black;
+}

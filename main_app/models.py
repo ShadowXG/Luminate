@@ -26,7 +26,7 @@ class Reply(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        ordering = ['-created_date']
+        ordering = ['created_date']
     
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

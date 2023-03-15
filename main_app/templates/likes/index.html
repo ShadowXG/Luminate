@@ -5,22 +5,24 @@
     {% if liked_posts %}
         <ul>
         {% for post in liked_posts %}
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title">{{ post.title }}</span>
-                <p>Body: {{ post.body }}</p>
-            </div>
-            <div class="card-action">
-                <form method="POST" action="{% url 'like_toggle' post_id=post.id %}" class="float-right">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
-                        {% if request.user in post.likes.all %}
-                            <i class="fas fa-heart red-text"></i>
-                        {% else %}
-                            <i class="far fa-heart"></i>
-                        {% endif %}
-                    </button>
-                </form>
+        <div class="centered">
+            <div class="card blue-grey lighten-3" style="width: 65%; margin-bottom: 20px;">
+                <div class="card-content">
+                    <span class="card-title">{{ post.title }}</span>
+                    <p>{{ post.body }}</p>
+                </div>
+                <div class="card-action col s12 right-align" style="border-radius: 10px;">
+                    <form method="POST" action="{% url 'like_toggle' post_id=post.id %}" class="float-right">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
+                            {% if request.user in post.likes.all %}
+                                <i class="fas fa-heart red-text"></i>
+                            {% else %}
+                                <i class="far fa-heart"></i>
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
         {% endfor %}
@@ -28,4 +30,14 @@
     {% else %}
         <p>You haven't liked any posts yet.</p>
     {% endif %}
+    <style>
+        .centered {
+            display: flex;
+            justify-content: center;
+        }
+        .card {
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+    </style>
 {% endblock %}
