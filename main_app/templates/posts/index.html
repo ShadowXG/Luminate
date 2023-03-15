@@ -1,80 +1,88 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Post List</h1>
-
+    <h1></h1>
     {% for post in posts %}
         {% with post.replies.all as replies %}
         {% with reply_count=replies.count %}
-        <div class="card">
-            <div class="card-content">
-                <p class="float-right" style="float: right">posted: {{post.created_date}}</p>
-                <span class="card-title">{{ post.title }}</span>
-                {% if post.photo %}
-                    <img src="{{ post.photo.url }}" alt="blog photo">
-                {% endif %}
-                <p>{{ post.body }}</p>
-            </div>
-            <div class="card-action">
-                <div class="row">
-                    {% if request.user == post.user %}
-                        <div class="col s6">
-                            <a href="{% url 'posts_update' post.id %}" class="blue-text text-lighten-2">Edit</a>
-                            <a href="{% url 'posts_delete' post.id %}" class="blue-text text-lighten-2">Delete</a>
-                        </div>
-                        <div class="col s6 right-align">
-                            <form method="POST" action="{% url 'toggle_index_like' post_id=post.id %}" class="float-right">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
-                                    {% if request.user in post.likes.all %}
-                                        <i class="fas fa-heart red-text"></i>
-                                    {% else %}
-                                        <i class="far fa-heart black-text"></i>
-                                    {% endif %}
-                                </button>
-                            </form>
-                        </div>
-                    {% else %}
-                        <div class="col s12 right-align">
-                            <form method="POST" action="{% url 'toggle_index_like' post_id=post.id %}" class="float-right">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}" title="Like">
-                                    {% if request.user in post.likes.all %}
-                                        <i class="fas fa-heart red-text"></i>
-                                    {% else %}
-                                        <i class="far fa-heart black-text"></i>
-                                    {% endif %}
-                                </button>
-                            </form>
-                        </div>
+        <div class="centered">
+            <div class="card blue-grey lighten-3" style="width: 65%; margin-bottom: 20px;">
+                <div class="card-content">
+                    <p class="float-right" style="float: right; color: #607d8b">posted: {{post.created_date}}</p>
+                    <br>
+                    <p class="float-right" style="float: right; color: #607d8b ">by: {{post.user}}</p>
+                    <span class="card-title">{{ post.title }}</span>
+                    {% if post.photo %}
+                        <img src="{{ post.photo.url }}" alt="blog photo">
                     {% endif %}
+                    <p>{{ post.body }}</p>
                 </div>
-            </div>
-            <div class="card-action" style="border-radius: 10px;">
-                <button class="reply-button btn blue lighten-1" style="margin-bottom: 5px;"data-post-id="{{ post.id }}"><i class="material-icons right" title="Replies">sms</i>{{ reply_count }}</button>
-                <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}" data-post-id="{{ post.id }}">
-                    {% csrf_token %}
-                    <textarea name="content" placeholder="Your reply here..."></textarea>
-                    <input type="hidden" name="post_id" value="{{ post.id }}">
-                    <button type="submit" class="blue-text text-lighten-2" style="border: 2px solid #5da6fa;background-color: white; padding: 6px;">Reply</button>
-                </form>
-                <ul>
-                    {% for reply in post.replies.all %}
-                        <li class="card reply-card" style="padding: 12px" data-post-id="{{ post.id }}">{{ reply.user.username }}: {{ reply.content }}
-                            {% if request.user == reply.user %}
-                                <a href="{% url 'reply_delete' reply.id %}" class="blue-text text-lighten-2" style="float: right; margin-left: 10px;" title="Delete"><i class="material-icons">clear</i></a>
-                                <a href="{% url 'reply_update' reply.id %}" class="blue-text text-lighten-2" style="float: right;" title="Edit"><i class="material-icons">edit</i></a>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+                <div class="card-action">
+                    <div class="row">
+                        {% if request.user == post.user %}
+                        <div class="col s6">
+                            <button onclick="location.href='{% url 'posts_update' post.id %}'" class="btn blue-grey lighten-1" style="margin-right: 10px">Edit</button>
+                            <button onclick="location.href='{% url 'posts_delete' post.id %}'" class="btn blue-grey lighten-2">Delete</button>
+                        </div>
+                            <div class="col s6 right-align">
+                                <form method="POST" action="{% url 'toggle_index_like' post_id=post.id %}" class="float-right">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}">
+                                        {% if request.user in post.likes.all %}
+                                            <i class="fas fa-heart red-text"></i>
+                                        {% else %}
+                                            <i class="far fa-heart black-text"></i>
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                        {% else %}
+                            <div class="col s12 right-align">
+                                <form method="POST" action="{% url 'toggle_index_like' post_id=post.id %}" class="float-right">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-primary{% else %}btn-secondary{% endif %}" title="Like">
+                                        {% if request.user in post.likes.all %}
+                                            <i class="fas fa-heart red-text"></i>
+                                        {% else %}
+                                            <i class="far fa-heart black-text"></i>
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-action" style="border-radius: 10px;">
+                    <button class="reply-button btn blue-grey lighten-1" style="margin-bottom: 5px;"data-post-id="{{ post.id }}"><i class="material-icons right" title="Replies">sms</i>{{ reply_count }}</button>
+                    <form class="reply-form" id="reply-form-{{ post.id }}" method="POST" action="{% url 'add_reply' %}" data-post-id="{{ post.id }}">
+                        {% csrf_token %}
+                        <textarea name="content" class="black-text" placeholder="Your reply here..."></textarea>
+                        <input type="hidden" name="post_id" value="{{ post.id }}">
+                        <button type="submit" class="blue-grey lighten-2" style="border: 2px solid #90a4ae; padding: 6px;">Reply</button>
+                    </form>
+                    <ul>
+                        {% for reply in post.replies.all %}
+                            <li class="card reply-card blue-grey lighten-2" style="padding: 12px; margin-bottom: 12px;" data-post-id="{{ post.id }}">{{ reply.user.username }}: {{ reply.content }}
+                                {% if request.user == reply.user %}
+                                    <a href="{% url 'reply_delete' reply.id %}" class="grey-text text-lighten-2" style="float: right; margin-left: 10px;" title="Delete"><i class="material-icons">clear</i></a>
+                                    <a href="{% url 'reply_update' reply.id %}" class="grey-text text-lighten-2" style="float: right;" title="Edit"><i class="material-icons">edit</i></a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
         {% endwith %}
         {% endwith %}
     {% endfor %}
     <style>
+        .centered {
+            display: flex;
+            justify-content: center;
+        }
         .card {
             border-radius: 10px;
+            margin: 0 auto;
         }
     </style>
     <script>
